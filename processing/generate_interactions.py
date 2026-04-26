@@ -6,17 +6,24 @@ from datetime import datetime, timedelta
 def generate_large_data(num_records=100000):
     data = []
 
+    # unique run identifier
+    run_id = datetime.now().strftime("%Y%m%d%H%M%S")
+
     for _ in range(num_records):
         row = {
-            "user_id": random.randint(1, 10000),  # many users
-            "product_id": random.randint(1, 30),  # MUST match API
+            "user_id": random.randint(1, 10000),
+            "product_id": random.randint(1, 30),
             "interaction_type": random.choice(["click", "view", "purchase"]),
             "rating": random.randint(1, 5),
-            "timestamp": datetime.now() - timedelta(days=random.randint(0, 30))
+            "timestamp": datetime.now() - timedelta(days=random.randint(0, 30)),
+            "run_id": run_id   # added
         }
         data.append(row)
 
     df = pd.DataFrame(data)
+
+    # remove duplicates within this run
+    df = df.drop_duplicates()
 
     output_path = "data/source/user_interactions.csv"
     df.to_csv(output_path, index=False)
@@ -26,4 +33,4 @@ def generate_large_data(num_records=100000):
 
 
 if __name__ == "__main__":
-    generate_large_data(15000)  # change to 1_000_000 later
+    generate_large_data(15000)

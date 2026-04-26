@@ -3,56 +3,59 @@ import pandas as pd
 import json
 
 
-# 🔹 Get latest folder helper
+#  Get latest folder
 def get_latest_folder(path):
     folders = sorted(os.listdir(path))
     return os.path.join(path, folders[-1])
 
 
-# 🔹 Get latest file path
+#  Get latest file path
 def get_latest_file(base_path):
     date_folder = get_latest_folder(base_path)
     time_folder = get_latest_folder(date_folder)
     return os.path.join(time_folder)
 
 
-# 🔹 Load latest API JSON
+#  Load latest API JSON
 def load_latest_json():
     base_path = "data/raw/api/products"
     latest_path = get_latest_file(base_path)
-    
+
     file_path = os.path.join(latest_path, "data.json")
-    
+
     with open(file_path, "r") as f:
         data = json.load(f)
-    
+
     print(f"Loaded JSON from: {file_path}")
     return data
 
 
-# 🔹 Load latest CSV
+# Load latest CSV
 def load_latest_csv():
     base_path = "data/raw/local/user_interactions"
     latest_path = get_latest_file(base_path)
-    
+
     file_path = os.path.join(latest_path, "data.csv")
-    
+
     df = pd.read_csv(file_path)
-    
+
     print(f"Loaded CSV from: {file_path}")
     return df
 
-# 🔹 Convert JSON to DataFrame
+
+#  Convert JSON to DataFrame
 def convert_json_to_df(json_data):
     products = json_data["products"]
-    
+
     df = pd.DataFrame(products)
-    
+
     print("\nConverted JSON to DataFrame:")
     print(df.head())
-    
+
     return df
 
+
+#  Merge interactions + product data
 def merge_data(products_df, interactions_df):
 
     merged_df = pd.merge(
@@ -62,27 +65,51 @@ def merge_data(products_df, interactions_df):
         right_on="id",
         how="left"
     )
+    merged_df.rename(columns={
+        "rating_x": "user_rating",
+        "rating_y": "product_rating"
+    }, inplace=True)
+
+    merged_df.drop(columns=["id"], inplace=True)
 
     print("\nMerged Data:")
     print(merged_df.head())
 
     return merged_df
 
+
+#  Save final dataset (NO DUPLICATES)
 def save_final_data(df):
     output_path = "data/processed/final_dataset.csv"
 
     os.makedirs("data/processed", exist_ok=True)
 
-    # ✅ Check if file exists
+    # Convert timestamp
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
     if os.path.exists(output_path):
-        df.to_csv(output_path, mode='a', header=False, index=False)
-        print("Data appended to existing file")
+        existing_df = pd.read_csv(output_path)
+        existing_df["timestamp"] = pd.to_datetime(existing_df["timestamp"])
+
+        combined_df = pd.concat([existing_df, df], ignore_index=True)
+
+        combined_df = combined_df.drop_duplicates(
+            subset=["user_id", "product_id", "interaction_type", "timestamp"]
+        )
     else:
-        df.to_csv(output_path, index=False)
-        print("New file created")
+        combined_df = df
 
-    print(f"Final dataset saved at: {output_path}")
+    # Clean output
+    combined_df = combined_df.sort_values(by="timestamp")
+    combined_df = combined_df.reset_index(drop=True)
 
+    combined_df.to_csv(output_path, index=False)
+
+    print(f"\nFinal dataset saved at: {output_path}")
+    print(f"Final shape: {combined_df.shape}")
+
+
+#  Main pipeline
 if __name__ == "__main__":
     json_data = load_latest_json()
     csv_data = load_latest_csv()
@@ -92,5 +119,3 @@ if __name__ == "__main__":
     merged_df = merge_data(products_df, csv_data)
 
     save_final_data(merged_df)
-
-    print("\nFinal merged shape:", merged_df.shape)

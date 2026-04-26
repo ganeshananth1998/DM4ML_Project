@@ -1,14 +1,13 @@
 import os
 import json
+import pandas as pd
 from datetime import datetime
 
 
 def save_json(data, source, data_type):
-    # Create date & time separately
     date = datetime.now().strftime("%Y-%m-%d")
     time = datetime.now().strftime("%H-%M-%S")
 
-    # Create folder path
     folder_path = f"data/raw/{source}/{data_type}/{date}/{time}"
     os.makedirs(folder_path, exist_ok=True)
 
@@ -21,11 +20,9 @@ def save_json(data, source, data_type):
 
 
 def save_csv(df, source, data_type):
-    # Create date & time separately
     date = datetime.now().strftime("%Y-%m-%d")
     time = datetime.now().strftime("%H-%M-%S")
 
-    # Create folder path
     folder_path = f"data/raw/{source}/{data_type}/{date}/{time}"
     os.makedirs(folder_path, exist_ok=True)
 
