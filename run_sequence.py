@@ -3,7 +3,7 @@ import sys
 import os
 
 PROJECT_DIR = os.getcwd()
-num_iterations = 33
+num_iterations = 5
 
 for i in range(1, num_iterations + 1):
     print(f"\n{'='*60}")
@@ -11,15 +11,23 @@ for i in range(1, num_iterations + 1):
     print(f"{'='*60}\n")
 
     try:
-        # Run ingestion pipeline
-        print("Running run_pipeline.py...")
+        # 🔥 STEP 1: Generate new data
+        print("Generating new interaction data...")
+        subprocess.run(
+            [sys.executable, "processing/generate_interactions.py"],
+            cwd=PROJECT_DIR,
+            check=True
+        )
+
+        # STEP 2: Run ingestion
+        print("\nRunning run_pipeline.py...")
         subprocess.run(
             [sys.executable, "run_pipeline.py"],
             cwd=PROJECT_DIR,
             check=True
         )
 
-        # Run transformation
+        # STEP 3: Transform + append
         print("\nRunning processing/transform_data.py...")
         subprocess.run(
             [sys.executable, "processing/transform_data.py"],
@@ -30,7 +38,7 @@ for i in range(1, num_iterations + 1):
         print(f"\nIteration {i} completed successfully\n")
 
     except subprocess.CalledProcessError as e:
-        print(f"\n❌ Error in iteration {i}: {e}")
+        print(f"\nError in iteration {i}: {e}")
         break
 
 print(f"\n{'='*60}")
