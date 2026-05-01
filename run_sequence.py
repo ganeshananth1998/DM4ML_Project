@@ -1,28 +1,38 @@
 import subprocess
 import sys
+import os
 
-# Run the pipeline sequence 33 times
+PROJECT_DIR = os.getcwd()
 num_iterations = 33
 
 for i in range(1, num_iterations + 1):
     print(f"\n{'='*60}")
     print(f"Iteration {i} of {num_iterations}")
     print(f"{'='*60}\n")
-    
-    # Run run_pipeline.py
-    print("Running run_pipeline.py...")
-    result1 = subprocess.run([sys.executable, "run_pipeline.py"], cwd="e:\\dm4ml project")
-    if result1.returncode != 0:
-        print(f"Warning: run_pipeline.py failed with return code {result1.returncode}")
-    
-    # Run processing/transform_data.py
-    print("\nRunning processing/transform_data.py...")
-    result2 = subprocess.run([sys.executable, "processing/transform_data.py"], cwd="e:\\dm4ml project")
-    if result2.returncode != 0:
-        print(f"Warning: processing/transform_data.py failed with return code {result2.returncode}")
-    
-    print(f"\nIteration {i} completed\n")
+
+    try:
+        # Run ingestion pipeline
+        print("Running run_pipeline.py...")
+        subprocess.run(
+            [sys.executable, "run_pipeline.py"],
+            cwd=PROJECT_DIR,
+            check=True
+        )
+
+        # Run transformation
+        print("\nRunning processing/transform_data.py...")
+        subprocess.run(
+            [sys.executable, "processing/transform_data.py"],
+            cwd=PROJECT_DIR,
+            check=True
+        )
+
+        print(f"\nIteration {i} completed successfully\n")
+
+    except subprocess.CalledProcessError as e:
+        print(f"\n❌ Error in iteration {i}: {e}")
+        break
 
 print(f"\n{'='*60}")
-print("All 33 iterations completed!")
+print("Pipeline execution completed!")
 print(f"{'='*60}")
