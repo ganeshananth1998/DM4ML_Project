@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import os
 from datetime import datetime, timedelta
 
 
@@ -16,7 +17,7 @@ def generate_large_data(num_records=100000):
             "interaction_type": random.choice(["click", "view", "purchase"]),
             "rating": random.randint(1, 5),
             "timestamp": datetime.now() - timedelta(days=random.randint(0, 30)),
-            "run_id": run_id   # added
+            "run_id": run_id
         }
         data.append(row)
 
@@ -26,6 +27,10 @@ def generate_large_data(num_records=100000):
     df = df.drop_duplicates()
 
     output_path = "data/source/user_interactions.csv"
+
+    #  create folder if not exists
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
     df.to_csv(output_path, index=False)
 
     print(f"Generated dataset with shape: {df.shape}")
