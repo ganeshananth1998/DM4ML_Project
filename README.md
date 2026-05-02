@@ -154,3 +154,22 @@ Clone the project, set up the virtual environment, and run the following command
 python processing/generate_interactions.py
 python run_pipeline.py
 python processing/transform_data.py
+
+
+How to Run the Project
+1. Setup environment
+python -m venv venv
+source venv/bin/activate   # Mac/Linux
+pip install -r requirements.txt
+2. Run full pipeline
+python run_sequence.py
+Notes
+Data is generated dynamically (not stored in Git)
+Final dataset will be created at:
+data/processed/final_dataset.csv
+Duplicate handling is implemented
+
+Do one clean run:
+rm -rf data/processed/*
+python run_sequence.py
+python check_duplicates.py
