@@ -84,26 +84,6 @@ def save_final_data(df):
 
     os.makedirs("data/processed", exist_ok=True)
 
-<<<<<<< HEAD
-    # Convert timestamp
-    df["timestamp"] = pd.to_datetime(df["timestamp"])
-
-    if os.path.exists(output_path):
-        existing_df = pd.read_csv(output_path)
-        existing_df["timestamp"] = pd.to_datetime(existing_df["timestamp"])
-
-        combined_df = pd.concat([existing_df, df], ignore_index=True)
-
-        combined_df = combined_df.drop_duplicates(
-            subset=["user_id", "product_id", "interaction_type", "timestamp"]
-        )
-    else:
-        combined_df = df
-
-    # Clean output
-    combined_df = combined_df.sort_values(by="timestamp")
-    combined_df = combined_df.reset_index(drop=True)
-=======
     # Convert timestamp to proper datetime
     df["timestamp"] = pd.to_datetime(df["timestamp"])
 
@@ -132,7 +112,6 @@ def save_final_data(df):
 
     print("Final dataset updated (no duplicates)")
     print(f"Final dataset saved at: {output_path}")
->>>>>>> feature-data-pipeline-feature-engineering
 
     combined_df.to_csv(output_path, index=False)
 
