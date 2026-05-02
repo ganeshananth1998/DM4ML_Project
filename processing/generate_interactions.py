@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import os
+import json
 from datetime import datetime, timedelta
 
 
@@ -26,15 +27,35 @@ def generate_large_data(num_records=100000):
     # remove duplicates within this run
     df = df.drop_duplicates()
 
-    output_path = "data/source/user_interactions.csv"
+    # paths
+    data_path = "data/source/user_interactions.csv"
+    metadata_dir = "data/metadata"
 
-    #  create folder if not exists
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    # create folders if not exist
+    os.makedirs(os.path.dirname(data_path), exist_ok=True)
+    os.makedirs(metadata_dir, exist_ok=True)
 
-    df.to_csv(output_path, index=False)
+    # save dataset
+    df.to_csv(data_path, index=False)
+
+    # create metadata
+    metadata = {
+        "run_id": run_id,
+        "source": "synthetic_generator",
+        "records": len(df),
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "transformation": "none",
+        "file_path": data_path
+    }
+
+    # save metadata file
+    metadata_path = os.path.join(metadata_dir, f"{run_id}.json")
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=4)
 
     print(f"Generated dataset with shape: {df.shape}")
-    print(f"Saved to: {output_path}")
+    print(f"Saved dataset to: {data_path}")
+    print(f"Saved metadata to: {metadata_path}")
 
 
 if __name__ == "__main__":
