@@ -36,10 +36,12 @@ def check_duplicates():
 # Notebook tasks (Papermill)
 # ------------------------
 
+PAPERMILL_COMMAND = [PYTHON_PATH, "-m", "papermill"]
+
 @task
 def data_profiling():
     subprocess.run([
-        PAPERMILL_PATH,
+        *PAPERMILL_COMMAND,
         "notebooks/Data Quality & Profiling.ipynb",
         "logs/profiling_output.ipynb"
     ], check=True)
@@ -48,7 +50,7 @@ def data_profiling():
 @task
 def data_preparation():
     subprocess.run([
-        PAPERMILL_PATH,
+        *PAPERMILL_COMMAND,
         "notebooks/Data-Preparation.ipynb",
         "logs/preparation_output.ipynb"
     ], check=True)
@@ -57,7 +59,7 @@ def data_preparation():
 @task
 def eda():
     subprocess.run([
-        PAPERMILL_PATH,
+        *PAPERMILL_COMMAND,
         "notebooks/EDA And Visualization.ipynb",
         "logs/eda_output.ipynb"
     ], check=True)
@@ -66,7 +68,7 @@ def eda():
 @task
 def feature_engineering_nb():
     subprocess.run([
-        PAPERMILL_PATH,
+        *PAPERMILL_COMMAND,
         "notebooks/Feature-Engineering And Transformation.ipynb",
         "logs/feature_engineering_output.ipynb"
     ], check=True)

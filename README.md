@@ -21,6 +21,34 @@ This project implements an **end-to-end machine learning pipeline** for a recomm
 
 The pipeline is orchestrated using **Prefect** and integrates:
 
+* Data ingestion (API + CSV)
+* Raw data storage (structured data lake)
+* Data transformation and merging
+* Incremental pipeline with append support
+* Synthetic data generation for scalability
+
+---
+
+## Setup Instructions
+
+<<<<<<< Updated upstream
+### 1. Clone repository
+=======
+| Student ID  | Name               |
+| ----------- | ------------------ |
+| 2025AE05551 | Ashish Raj         |
+| 2025AE05455 | Ganesh A           |
+| 2025AF05149 | P. Hemanth Bhargav |
+| 2025AF05127 | Praveen            |
+
+---
+
+## Overview
+
+This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
+
+The pipeline is orchestrated using **Prefect** and integrates:
+
 * Data generation & ingestion
 * Data transformation & validation
 * Data profiling & exploratory data analysis (EDA)
@@ -74,6 +102,103 @@ DM4ML_Project/
 ├── docs/                       # Task documentation
 ├── requirements.txt
 └── README.md
+
+---
+
+
+```
+##  Feature Store Integration
+
+This repository now includes a Feast-based feature store implementation under `feature_store/`.
+
+To initialize and materialize the feature catalog:
+
+```bash
+python feature_store/setup_feature_store.py
+```
+
+To run a sample training and inference feature retrieval demo:
+
+```bash
+python feature_store/feature_store_demo.py
+```
+
+### How to Check and Inspect the Feature Store
+
+To explicitly check the feature store status and view registered features:
+
+```bash
+# Check feature store status
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print('Feature store initialized successfully')"
+
+# List all feature views
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print(fs.list_feature_views())"
+
+# Get feature view details
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); fv = fs.get_feature_view('user_profile_v1'); print(fv)"
+```
+
+---
+
+## Pipeline Workflow
+
+```
+Data Generation
+   ↓
+Data Transformation
+   ↓
+Data Validation
+   ↓
+Data Profiling (Notebook)
+   ↓
+Data Preparation (Notebook)
+   ↓
+EDA & Visualization
+   ↓
+Feature Engineering (Notebook)
+   ↓
+Feature Store
+   ↓
+Model Training & Evaluation (Notebook)
+```
+
+---
+
+## Technologies Used
+
+* Python
+* Prefect (pipeline orchestration)
+* Pandas (data processing)
+* Scikit-learn (model training)
+* Papermill (notebook execution)
+* Joblib (model serialization)
+
+---
+
+## Key Data Sources
+
+* **User Interaction Data**
+
+  * user_id, product_id, interaction_type, rating, timestamp
+
+* **Product Metadata**
+
+  * product_id, category, price, brand, description
+
+* **Processed Dataset**
+
+  * cleaned and transformed dataset used for modeling
+
+---
+
+## Setup & Execution
+
+### 1️⃣ Clone the repository
+>>>>>>> Stashed changes
+
+```bash
+git clone <repo_url>
+cd DM4ML_PROJECT
 ```
 
 ---
@@ -197,34 +322,97 @@ models/model_<timestamp>.pkl
 After training, predictions can be generated using:
 
 ```bash
-python processing/predict.py
+pip install -r requirements.txt
+python feature_store/setup_feature_store.py
+```
+
+To run a sample training and inference feature retrieval demo:
+
+```bash
+python feature_store/feature_store_demo.py
+```
+
+### How to Check and Inspect the Feature Store
+
+To explicitly check the feature store status and view registered features:
+
+```bash
+# Check feature store status
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print('Feature store initialized successfully')"
+
+# List all feature views
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print(fs.list_feature_views())"
+
+# Get feature view details
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); fv = fs.get_feature_view('user_profile_v1'); print(fv)"
 ```
 
 ---
 
-## Key Features
+##  Execution Workflow
 
-* Fully automated pipeline using Prefect
-* Integration of Python scripts and Jupyter notebooks
-* Feature store implementation
-* Cross-platform compatibility
-* Modular and scalable design
+Follow this step-by-step flow to run the complete data pipeline:
+
+1. **Data Quality Notebook** (`analysis dev/Data-Quality.ipynb`)
+   - Run data quality checks and validation
+   - Identify and handle missing values, outliers, and data inconsistencies
+
+2. **Data Preparation** (`analysis dev/Data-Preperation.ipynb`)
+   - Clean and preprocess raw data
+   - Handle data transformations and normalization
+
+3. **EDA and Visualization** (`analysis dev/EDA And Visualization.ipynb`)
+   - Perform exploratory data analysis
+   - Generate visualizations and insights
+   - Understand data distributions and relationships
+
+4. **Feature Engineering and Transformation**
+   - Create new features from existing data
+   - Apply transformations and scaling
+   - Prepare features for modeling
+
+5. **Feature Store** (`feature_store/`)
+   - Initialize and populate the feature store
+   - Register feature views and entities
+   - Enable feature serving for training and inference
+
+6. **Model Building and Evaluations**
+   - Train machine learning models
+   - Evaluate model performance
+   - Compare different algorithms and configurations
 
 ---
 
-## Monitoring & Logging
+##  Output
 
-Prefect provides:
+Final dataset will be generated at:
 
-* Task-level execution logs
-* Runtime monitoring
-* Failure tracking
-
-Example:
-
+```text
+data/processed/final_dataset.csv
 ```
-Task run 'model_training' - Finished in state Completed()
-Flow run - Finished in state Completed()
+
+ Notes:
+
+* File is **not included in Git**
+* It is generated dynamically
+* Each run **appends new data**
+
+---
+
+##  Project Structure
+
+```text
+data/
+ ├── raw/        # ingested data (timestamp-based)
+ ├── processed/  # final dataset
+ ├── source/     # input CSV
+
+analysis dev/    # notebooks for data quality, preparation, EDA, feature engineering, and model evaluation
+feature_store/   # Feast feature store definitions and demo
+ingestion/       # API & CSV ingestion
+processing/      # transformation logic
+logs/            # execution logs
+pipeline/        # orchestration (future use)
 ```
 
 ---
