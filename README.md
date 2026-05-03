@@ -1,11 +1,8 @@
-# 🛍️ Recommendation System Pipeline (DM4ML Project)
+# Recommendation System Pipeline (DM4ML Project)
 
-## 👥 Team Information
+**Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project/tree/main
 
-* **Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project/tree/main
-* **Team Members:**
-
-## 👥 Team Members
+## Team Members
 
 | Student ID  | Name               |
 | ----------- | ------------------ |
@@ -16,7 +13,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
 
@@ -31,7 +28,7 @@ The pipeline is fully orchestrated using **Prefect** and integrates:
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 * Build an **automated ML pipeline**
 * Ensure **reproducibility across environments**
@@ -40,7 +37,7 @@ The pipeline is fully orchestrated using **Prefect** and integrates:
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```text id="2dj3hp"
 DM4ML_Project/
@@ -78,7 +75,7 @@ DM4ML_Project/
 
 ---
 
-## 🔄 Pipeline Workflow
+## Pipeline Workflow
 
 ```text id="rfz8i7"
 Data Generation
@@ -102,7 +99,7 @@ Model Training & Evaluation (Notebook)
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 * Python
 * Prefect (pipeline orchestration)
@@ -113,7 +110,7 @@ Model Training & Evaluation (Notebook)
 
 ---
 
-## 📊 Key Data Sources
+## Key Data Sources
 
 * **User Interaction Data**
 
@@ -129,7 +126,7 @@ Model Training & Evaluation (Notebook)
 
 ---
 
-## 🚀 Setup & Execution
+## Setup & Execution
 
 ### 1️⃣ Clone the repository
 
@@ -165,7 +162,7 @@ python pipeline/prefect_flow.py
 
 ---
 
-## 📈 Outputs
+## Outputs
 
 The pipeline generates:
 
@@ -183,7 +180,7 @@ models/model_<timestamp>.pkl
 
 ---
 
-## 📊 Results
+## Results
 
 * Dataset processed: ~600,000 records
 * Duplicate records removed
@@ -192,7 +189,7 @@ models/model_<timestamp>.pkl
 
 ---
 
-## 🧠 Key Features
+## Key Features
 
 * Fully automated pipeline using Prefect
 * Integration of Python scripts and Jupyter notebooks
@@ -202,7 +199,7 @@ models/model_<timestamp>.pkl
 
 ---
 
-## 🛠️ Monitoring & Logging
+## Monitoring & Logging
 
 Prefect provides:
 
@@ -219,7 +216,7 @@ Flow run - Finished in state Completed()
 
 ---
 
-## 📂 Deliverables
+## Deliverables
 
 * Prefect orchestration pipeline
 * Jupyter notebooks
@@ -229,7 +226,7 @@ Flow run - Finished in state Completed()
 
 ---
 
-## 📌 Conclusion
+## Conclusion
 
 This project demonstrates a **production-style ML pipeline** that integrates all stages of the machine learning lifecycle.
 
