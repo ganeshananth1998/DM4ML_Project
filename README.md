@@ -1,6 +1,8 @@
 # Recommendation System Pipeline (DM4ML Project)
 
-**Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project/tree/main
+**Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project
+
+---
 
 ## Team Members
 
@@ -17,7 +19,7 @@
 
 This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
 
-The pipeline is fully orchestrated using **Prefect** and integrates:
+The pipeline is orchestrated using **Prefect** and integrates:
 
 * Data generation & ingestion
 * Data transformation & validation
@@ -33,13 +35,13 @@ The pipeline is fully orchestrated using **Prefect** and integrates:
 * Build an **automated ML pipeline**
 * Ensure **reproducibility across environments**
 * Maintain a **modular and scalable architecture**
-* Integrate **data processing, feature engineering, and model training**
+* Integrate **data processing, feature engineering, and modeling**
 
 ---
 
 ## Project Structure
 
-```text id="2dj3hp"
+```text
 DM4ML_Project/
 │
 ├── pipeline/
@@ -48,9 +50,10 @@ DM4ML_Project/
 ├── processing/
 │   ├── generate_interactions.py
 │   ├── transform_data.py
-│   └── check_duplicates.py
+│   ├── check_duplicates.py
+│   └── predict.py               # Inference script (optional)
 │
-├── analysis_dev/                # Jupyter notebooks
+├── notebooks/                   # Jupyter notebooks
 │   ├── Data Quality & Profiling.ipynb
 │   ├── Data-Preparation.ipynb
 │   ├── EDA And Visualization.ipynb
@@ -77,7 +80,7 @@ DM4ML_Project/
 
 ## Pipeline Workflow
 
-```text id="rfz8i7"
+```
 Data Generation
    ↓
 Data Transformation
@@ -130,8 +133,8 @@ Model Training & Evaluation (Notebook)
 
 ### 1️⃣ Clone the repository
 
-```bash id="o1h7al"
-git clone https://github.com/<your-username>/<repo-name>
+```bash
+git clone https://github.com/ganeshananth1998/DM4ML_Project
 cd DM4ML_Project
 ```
 
@@ -139,7 +142,7 @@ cd DM4ML_Project
 
 ### 2️⃣ Create virtual environment
 
-```bash id="1a0ecp"
+```bash
 python3 -m venv venv
 source venv/bin/activate     # Mac/Linux
 ```
@@ -148,7 +151,7 @@ source venv/bin/activate     # Mac/Linux
 
 ### 3️⃣ Install dependencies
 
-```bash id="2q79h2"
+```bash
 pip install -r requirements.txt
 ```
 
@@ -156,7 +159,7 @@ pip install -r requirements.txt
 
 ### 4️⃣ Run the pipeline
 
-```bash id="e8t2lb"
+```bash
 python pipeline/prefect_flow.py
 ```
 
@@ -174,7 +177,7 @@ The pipeline generates:
 
 Example:
 
-```text id="k5bd8c"
+```
 models/model_<timestamp>.pkl
 ```
 
@@ -186,6 +189,16 @@ models/model_<timestamp>.pkl
 * Duplicate records removed
 * Features successfully generated
 * Model trained and evaluated with high accuracy
+
+---
+
+## Prediction (Optional)
+
+After training, predictions can be generated using:
+
+```bash
+python processing/predict.py
+```
 
 ---
 
@@ -209,7 +222,7 @@ Prefect provides:
 
 Example:
 
-```text id="c2d74n"
+```
 Task run 'model_training' - Finished in state Completed()
 Flow run - Finished in state Completed()
 ```
@@ -228,7 +241,7 @@ Flow run - Finished in state Completed()
 
 ## Conclusion
 
-This project demonstrates a **production-style ML pipeline** that integrates all stages of the machine learning lifecycle.
+This project demonstrates a **production-style ML pipeline** integrating all stages of the machine learning lifecycle.
 
 It ensures:
 

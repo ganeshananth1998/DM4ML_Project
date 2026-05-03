@@ -40,7 +40,7 @@ def check_duplicates():
 def data_profiling():
     subprocess.run([
         PAPERMILL_PATH,
-        "analysis_dev/Data Quality & Profiling.ipynb",
+        "notebooks/Data Quality & Profiling.ipynb",
         "logs/profiling_output.ipynb"
     ], check=True)
 
@@ -49,7 +49,7 @@ def data_profiling():
 def data_preparation():
     subprocess.run([
         PAPERMILL_PATH,
-        "analysis_dev/Data-Preparation.ipynb",
+        "notebooks/Data-Preparation.ipynb",
         "logs/preparation_output.ipynb"
     ], check=True)
 
@@ -58,7 +58,7 @@ def data_preparation():
 def eda():
     subprocess.run([
         PAPERMILL_PATH,
-        "analysis_dev/EDA And Visualization.ipynb",
+        "notebooks/EDA And Visualization.ipynb",
         "logs/eda_output.ipynb"
     ], check=True)
 
@@ -67,7 +67,7 @@ def eda():
 def feature_engineering_nb():
     subprocess.run([
         PAPERMILL_PATH,
-        "analysis_dev/Feature-Engineering And Transformation.ipynb",
+        "notebooks/Feature-Engineering And Transformation.ipynb",
         "logs/feature_engineering_output.ipynb"
     ], check=True)
 
@@ -100,7 +100,7 @@ def run_feature_store_demo():
 def model_training():
     subprocess.run([
         PAPERMILL_PATH,
-        "analysis_dev/Model Building & Evaluation.ipynb",
+        "notebooks/Model Building & Evaluation.ipynb",
         "logs/model_output.ipynb"
     ], check=True)
 
@@ -111,7 +111,7 @@ def model_training():
 
 @flow
 def pipeline_flow():
-    print("🚀 Prefect Pipeline Started")
+    print(" Prefect Pipeline Started")
 
     generate = generate_data()
     transform = transform_data()
@@ -132,7 +132,7 @@ def pipeline_flow():
         >> profiling >> preparation >> eda_task \
         >> feature_nb >> store_setup >> store_demo >> model
 
-    print("🎉 Prefect Pipeline Completed")
+    print(" Prefect Pipeline Completed")
 
 
 if __name__ == "__main__":
