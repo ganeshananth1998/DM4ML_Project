@@ -2,6 +2,9 @@
 data/raw/
 data/processed/*.csv
 
+# Model files
+models/
+
 # Virtual environment
 venv/
 
