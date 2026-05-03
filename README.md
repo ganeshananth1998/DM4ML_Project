@@ -16,7 +16,170 @@ It includes:
 
 ## Setup Instructions
 
+<<<<<<< Updated upstream
 ### 1. Clone repository
+=======
+| Student ID  | Name               |
+| ----------- | ------------------ |
+| 2025AE05551 | Ashish Raj         |
+| 2025AE05455 | Ganesh A           |
+| 2025AF05149 | P. Hemanth Bhargav |
+| 2025AF05127 | Praveen            |
+
+---
+
+## Overview
+
+This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
+
+The pipeline is orchestrated using **Prefect** and integrates:
+
+* Data generation & ingestion
+* Data transformation & validation
+* Data profiling & exploratory data analysis (EDA)
+* Feature engineering (via notebooks)
+* Feature store integration
+* Model training & evaluation
+
+---
+
+## Objectives
+
+* Build an **automated ML pipeline**
+* Ensure **reproducibility across environments**
+* Maintain a **modular and scalable architecture**
+* Integrate **data processing, feature engineering, and modeling**
+
+---
+
+## Project Structure
+
+```text
+DM4ML_Project/
+│
+├── pipeline/
+│   └── prefect_flow.py          # Main orchestration pipeline
+│
+├── processing/
+│   ├── generate_interactions.py
+│   ├── transform_data.py
+│   ├── check_duplicates.py
+│   └── predict.py               # Inference script (optional)
+│
+├── notebooks/                   # Jupyter notebooks
+│   ├── Data Quality & Profiling.ipynb
+│   ├── Data-Preparation.ipynb
+│   ├── EDA And Visualization.ipynb
+│   ├── Feature-Engineering And Transformation.ipynb
+│   └── Model Building & Evaluation.ipynb
+│
+├── feature_store/
+│   ├── setup_feature_store.py
+│   └── feature_store_demo.py
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── metadata/
+│
+├── models/                     # Trained model outputs
+├── logs/                       # Notebook outputs (ignored in Git)
+├── docs/                       # Task documentation
+├── requirements.txt
+└── README.md
+
+---
+
+
+```
+##  Feature Store Integration
+
+This repository now includes a Feast-based feature store implementation under `feature_store/`.
+
+To initialize and materialize the feature catalog:
+
+```bash
+python feature_store/setup_feature_store.py
+```
+
+To run a sample training and inference feature retrieval demo:
+
+```bash
+python feature_store/feature_store_demo.py
+```
+
+### How to Check and Inspect the Feature Store
+
+To explicitly check the feature store status and view registered features:
+
+```bash
+# Check feature store status
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print('Feature store initialized successfully')"
+
+# List all feature views
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print(fs.list_feature_views())"
+
+# Get feature view details
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); fv = fs.get_feature_view('user_profile_v1'); print(fv)"
+```
+
+---
+
+## Pipeline Workflow
+
+```
+Data Generation
+   ↓
+Data Transformation
+   ↓
+Data Validation
+   ↓
+Data Profiling (Notebook)
+   ↓
+Data Preparation (Notebook)
+   ↓
+EDA & Visualization
+   ↓
+Feature Engineering (Notebook)
+   ↓
+Feature Store
+   ↓
+Model Training & Evaluation (Notebook)
+```
+
+---
+
+## Technologies Used
+
+* Python
+* Prefect (pipeline orchestration)
+* Pandas (data processing)
+* Scikit-learn (model training)
+* Papermill (notebook execution)
+* Joblib (model serialization)
+
+---
+
+## Key Data Sources
+
+* **User Interaction Data**
+
+  * user_id, product_id, interaction_type, rating, timestamp
+
+* **Product Metadata**
+
+  * product_id, category, price, brand, description
+
+* **Processed Dataset**
+
+  * cleaned and transformed dataset used for modeling
+
+---
+
+## Setup & Execution
+
+### 1️⃣ Clone the repository
+>>>>>>> Stashed changes
 
 ```bash
 git clone <repo_url>
