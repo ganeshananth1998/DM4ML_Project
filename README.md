@@ -2,8 +2,9 @@
 
 **Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project
 
+---
 
-## Team Members
+##  Team Members
 
 | Student ID  | Name               |
 | ----------- | ------------------ |
@@ -12,45 +13,47 @@
 | 2025AF05149 | P. Hemanth Bhargav |
 | 2025AF05127 | Praveen            |
 
-## Overview
+---
+
+##  Overview
 
 This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
 
-The pipeline is orchestrated using **Prefect** and integrates:
+The pipeline is orchestrated using **Prefect**, ensuring reliable workflow execution, monitoring, and reproducibility. It integrates:
 
 * Data generation & ingestion
 * Data transformation & validation
 * Data profiling & exploratory data analysis (EDA)
 * Feature engineering (via notebooks)
-* Feature store integration
+* Feature store integration (Feast)
 * Model training & evaluation
 
 ---
 
-## Objectives
+##  Objectives
 
-* Build an **automated ML pipeline**
-* Ensure **reproducibility across environments**
-* Maintain a **modular and scalable architecture**
-* Integrate **data processing, feature engineering, and modeling**
+* Build an automated ML pipeline
+* Ensure reproducibility across environments
+* Maintain a modular and scalable architecture
+* Integrate data processing, feature engineering, and modeling
 
 ---
 
-## Project Structure
+##  Project Structure
 
-```text
+```
 DM4ML_Project/
 │
 ├── pipeline/
-│   └── prefect_flow.py          # Main orchestration pipeline
+│   └── prefect_flow.py
 │
 ├── processing/
 │   ├── generate_interactions.py
 │   ├── transform_data.py
 │   ├── check_duplicates.py
-│   └── predict.py               # Inference script (optional)
+│   └── predict.py
 │
-├── notebooks/                   # Jupyter notebooks
+├── notebooks/
 │   ├── Data Quality & Profiling.ipynb
 │   ├── Data-Preparation.ipynb
 │   ├── EDA And Visualization.ipynb
@@ -66,16 +69,16 @@ DM4ML_Project/
 │   ├── processed/
 │   └── metadata/
 │
-├── models/                     # Trained model outputs
-├── logs/                       # Notebook outputs (ignored in Git)
-├── docs/                       # Task documentation
+├── models/
+├── logs/
+├── docs/
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Pipeline Workflow
+##  Pipeline Workflow
 
 ```
 Data Generation
@@ -84,49 +87,42 @@ Data Transformation
    ↓
 Data Validation
    ↓
-Data Profiling (Notebook)
+Data Profiling
    ↓
-Data Preparation (Notebook)
+Data Preparation
    ↓
 EDA & Visualization
    ↓
-Feature Engineering (Notebook)
+Feature Engineering
    ↓
 Feature Store
    ↓
-Model Training & Evaluation (Notebook)
+Model Training & Evaluation
 ```
 
 ---
 
-## Technologies Used
+##  Technologies Used
 
 * Python
-* Prefect (pipeline orchestration)
+* Prefect (workflow orchestration & monitoring)
 * Pandas (data processing)
 * Scikit-learn (model training)
-* Papermill (notebook execution)
+* Papermill (notebook execution automation)
 * Joblib (model serialization)
+* Feast (feature store)
 
 ---
 
-## Key Data Sources
+##  Key Data Sources
 
-* **User Interaction Data**
+* User interaction data
+* Product metadata
+* Processed dataset
 
-  * user_id, product_id, interaction_type, rating, timestamp
+---
 
-* **Product Metadata**
-
-  * product_id, category, price, brand, description
-
-* **Processed Dataset**
-
-  * cleaned and transformed dataset used for modeling
-
-
-
-## Setup & Execution
+## 🚀 Setup & Execution
 
 ### 1️⃣ Clone the repository
 
@@ -141,7 +137,7 @@ cd DM4ML_Project
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate     # Mac/Linux
+source venv/bin/activate
 ```
 
 ---
@@ -160,72 +156,47 @@ pip install -r requirements.txt
 python pipeline/prefect_flow.py
 ```
 
+This executes the complete end-to-end pipeline using **Prefect orchestration**, enabling task-level execution tracking and reproducibility.
+
 ---
 
-## Outputs
+##  Feature Store Integration (Feast)
 
-The pipeline generates:
-
-* Processed dataset
-* Feature dataset
-* Executed notebooks (stored in `logs/`)
-* Feature store artifacts
-* Trained model
-
-Example:
+This project integrates a **Feast-based feature store** located in:
 
 ```
-models/model_<timestamp>.pkl
-```
-Final dataset will be generated at:
-
-```text
-data/processed/final_dataset.csv
+feature_store/
 ```
 
- Notes:
-
-* File is **not included in Git**
-* It is generated dynamically
-* Each run **appends new data**
+It ensures **consistent feature access across training and inference pipelines**, a key requirement for production ML systems.
 
 ---
 
----
-
-## Results
-
-* Dataset processed: ~600,000 records
-* Duplicate records removed
-* Features successfully generated
-* Model trained and evaluated with high accuracy
-
----
-
-## Prediction (Optional)
-
-After training, predictions can be generated using:
+### ▶ Initialize and Materialize Feature Store
 
 ```bash
-pip install -r requirements.txt
 python feature_store/setup_feature_store.py
 ```
 
-To run a sample training and inference feature retrieval demo:
+---
+
+### ▶ Run Feature Store Demo
 
 ```bash
 python feature_store/feature_store_demo.py
 ```
 
-### How to Check and Inspect the Feature Store
+This demonstrates feature retrieval for both training and inference scenarios.
 
-To explicitly check the feature store status and view registered features:
+---
+
+###  Inspect Feature Store
 
 ```bash
-# Check feature store status
+# Initialize feature store
 python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print('Feature store initialized successfully')"
 
-# List all feature views
+# List feature views
 python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print(fs.list_feature_views())"
 
 # Get feature view details
@@ -234,42 +205,93 @@ python -c "from feature_store.feature_store import setup_feature_store; fs = set
 
 ---
 
-##  Execution Workflow
+## Prediction (Optional)
 
-Follow this step-by-step flow to run the complete data pipeline:
+After training, predictions can be generated using:
 
-1. **Data Quality Notebook** (`analysis dev/Data-Quality.ipynb`)
-   - Run data quality checks and validation
-   - Identify and handle missing values, outliers, and data inconsistencies
-
-2. **Data Preparation** (`analysis dev/Data-Preperation.ipynb`)
-   - Clean and preprocess raw data
-   - Handle data transformations and normalization
-
-3. **EDA and Visualization** (`analysis dev/EDA And Visualization.ipynb`)
-   - Perform exploratory data analysis
-   - Generate visualizations and insights
-   - Understand data distributions and relationships
-
-4. **Feature Engineering and Transformation**
-   - Create new features from existing data
-   - Apply transformations and scaling
-   - Prepare features for modeling
-
-5. **Feature Store** (`feature_store/`)
-   - Initialize and populate the feature store
-   - Register feature views and entities
-   - Enable feature serving for training and inference
-
-6. **Model Building and Evaluations**
-   - Train machine learning models
-   - Evaluate model performance
-   - Compare different algorithms and configurations
+```bash
+python processing/predict.py
+```
 
 ---
 
+##  Outputs
 
-## Deliverables
+The pipeline generates the following artifacts:
+
+* **Processed Dataset**
+
+  ```
+  data/processed/final_dataset.csv
+  ```
+
+* **Feature Store Data**
+  Managed using Feast for consistent feature access during training and inference
+
+* **Trained Model**
+
+  ```
+  models/
+  ```
+
+* **Executed Notebook Outputs**
+
+  ```
+  logs/
+  ```
+
+---
+
+### Notes
+
+* Dataset is generated dynamically
+* Not stored in Git repository
+* Each pipeline run appends new data
+
+---
+
+## Results
+
+* Dataset processed: ~600,000 records
+* Duplicate records removed
+* Features generated successfully
+* Model trained with high accuracy
+* Pipeline executed successfully using Prefect flow orchestration
+
+---
+
+##  Execution Workflow (Step-by-Step)
+
+1. **Data Generation**
+   `processing/generate_interactions.py`
+
+2. **Data Transformation**
+   `processing/transform_data.py`
+
+3. **Data Validation**
+   `processing/check_duplicates.py`
+
+4. **Data Quality & Profiling**
+   `notebooks/Data Quality & Profiling.ipynb`
+
+5. **Data Preparation**
+   `notebooks/Data-Preparation.ipynb`
+
+6. **EDA & Visualization**
+   `notebooks/EDA And Visualization.ipynb`
+
+7. **Feature Engineering**
+   `notebooks/Feature-Engineering And Transformation.ipynb`
+
+8. **Feature Store Setup & Demo**
+   `feature_store/`
+
+9. **Model Training & Evaluation**
+   `notebooks/Model Building & Evaluation.ipynb`
+
+---
+
+##  Deliverables
 
 * Prefect orchestration pipeline
 * Jupyter notebooks
@@ -281,7 +303,7 @@ Follow this step-by-step flow to run the complete data pipeline:
 
 ## Conclusion
 
-This project demonstrates a **production-style ML pipeline** integrating all stages of the machine learning lifecycle.
+This project demonstrates a **production-style ML pipeline** that integrates all stages of the machine learning lifecycle.
 
 It ensures:
 
