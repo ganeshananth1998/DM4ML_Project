@@ -2,52 +2,86 @@
 
 ## Overview
 
-In this task, we implemented an end-to-end data pipeline using **Prefect** to automate the workflow. The pipeline orchestrates multiple stages including data generation, validation, transformation, feature engineering, and model training.
+In this task, we designed and implemented an end-to-end machine learning pipeline using **Prefect** for orchestration.
 
-The goal is to ensure the pipeline is:
+The pipeline integrates multiple stages of the ML lifecycle, including:
+
+* Data generation and ingestion
+* Data transformation and validation
+* Data profiling and exploratory data analysis (EDA)
+* Data preparation and feature engineering
+* Feature store integration
+* Model training and evaluation
+
+The objective was to build a pipeline that is:
 
 * Automated
 * Reproducible
-* Monitored
+* Modular
 * Scalable
+* Easy to monitor
 
 ---
 
-## DAG Flow
+## Pipeline Architecture
 
-The pipeline follows this structure:
+The pipeline follows a structured Directed Acyclic Graph (DAG):
 
 ```
-Ingestion → Validation → Preparation → Transformation → Feature Engineering → Model Training
+Data Generation
+   ↓
+Data Transformation
+   ↓
+Data Validation
+   ↓
+Data Profiling (Notebook)
+   ↓
+Data Preparation (Notebook)
+   ↓
+EDA & Visualization (Notebook)
+   ↓
+Feature Engineering (Notebook)
+   ↓
+Feature Store Setup & Demo
+   ↓
+Model Training & Evaluation (Notebook)
 ```
 
-### Mapping to Implementation:
+---
 
-| Stage                        | Implementation             |
-| ---------------------------- | -------------------------- |
-| Ingestion                    | `generate_interactions.py` |
-| Validation                   | `check_duplicates.py`      |
-| Preparation + Transformation | `transform_data.py`        |
-| Feature Engineering          | `feature_engineering.py`   |
-| Model Training               | `train_model.py`           |
+## Implementation Mapping
+
+| Stage                       | Implementation                                              |
+| --------------------------- | ----------------------------------------------------------- |
+| Data Generation             | `processing/generate_interactions.py`                       |
+| Data Transformation         | `processing/transform_data.py`                              |
+| Data Validation             | `check_duplicates.py`                                       |
+| Data Profiling              | `analysis_dev/Data Quality & Profiling.ipynb`               |
+| Data Preparation            | `analysis_dev/Data-Preparation.ipynb`                       |
+| EDA                         | `analysis_dev/EDA And Visualization.ipynb`                  |
+| Feature Engineering         | `analysis_dev/Feature-Engineering And Transformation.ipynb` |
+| Feature Store Setup         | `feature_store/setup_feature_store.py`                      |
+| Feature Store Demo          | `feature_store/feature_store_demo.py`                       |
+| Model Training & Evaluation | `analysis_dev/Model Building & Evaluation.ipynb`            |
 
 ---
 
 ## Orchestration Tool: Prefect
 
-We used **Prefect** to define and manage the pipeline.
+We used **Prefect** to orchestrate the entire pipeline.
 
-### Key Features Used:
+### Key Features Used
 
-* `@flow` for defining the pipeline
-* `@task` for individual steps
+* `@flow` to define the pipeline
+* `@task` to modularize each stage
+* Task dependency management (DAG execution)
+* Integration with **Papermill** for executing Jupyter notebooks
 * Automatic logging and monitoring
-* Task-level execution tracking
-* Failure handling
+* Failure handling and error propagation
 
 ---
 
-## Pipeline Code
+## Pipeline Implementation
 
 The orchestration logic is implemented in:
 
@@ -55,43 +89,50 @@ The orchestration logic is implemented in:
 pipeline/prefect_flow.py
 ```
 
-### Structure:
+### Key Characteristics
 
-* Each pipeline step is defined as a Prefect task
-* Tasks are executed sequentially within a flow
-* Prefect manages execution, logging, and monitoring
+* Python scripts are executed using subprocess calls
+* Jupyter notebooks are executed using Papermill
+* Tasks are executed sequentially based on dependencies
+* Each stage consumes outputs from previous steps
 
 ---
 
 ## Execution
 
-The pipeline is executed using:
+The pipeline can be executed using:
 
-```
+```bash
 python pipeline/prefect_flow.py
 ```
 
 ---
 
-## Execution Results
+## Execution Outputs
 
-The pipeline executed successfully with the following outputs:
+The pipeline generates the following outputs:
 
-* Dataset processed: **600,000 rows**
-* Duplicate records removed
-* Features generated and stored
-* Model trained successfully
-* Model accuracy: **1.00**
-* Model saved in:
+* Processed dataset (`data/processed/final_dataset.csv`)
+* Feature dataset (`data/processed/features.csv`)
+* Feature store artifacts
+* Executed notebooks stored in the `logs/` directory
+* Trained model artifact
 
-  ```
-  models/model_<timestamp>.pkl
-  ```
+Example model output:
 
-Prefect logs confirm:
+```
+models/model_<timestamp>.pkl
+```
 
-* All tasks completed successfully
-* Flow execution completed without errors
+---
+
+## Results
+
+* Total records processed: ~600,000
+* Data validation completed successfully (duplicates removed)
+* Feature engineering executed successfully
+* Model trained and evaluated
+* Model achieved high accuracy in the current setup
 
 ---
 
@@ -99,37 +140,44 @@ Prefect logs confirm:
 
 Prefect provides detailed logs for each task:
 
-* Task start and completion status
+* Task execution start and completion
 * Execution time
-* Success/failure state
+* Success or failure state
 
-Example:
+Example log output:
 
 ```
-Task run 'train_model' - Finished in state Completed()
+Task run 'feature_engineering_nb' - Finished in state Completed()
+Task run 'model_training' - Finished in state Completed()
 Flow run - Finished in state Completed()
 ```
+
+Additionally:
+
+* Notebook outputs are stored for inspection
+* Logs support debugging and traceability
 
 ---
 
 ## Deliverables
 
-* Prefect orchestration code (`prefect_flow.py`)
+* Prefect orchestration script (`pipeline/prefect_flow.py`)
 * Pipeline execution logs
-* Screenshot showing successful execution
+* Executed Jupyter notebooks
+* Feature store implementation
 * Trained model artifact
 
 ---
 
 ## Conclusion
 
-The pipeline is fully automated using Prefect, enabling:
+This pipeline demonstrates a production-style machine learning workflow by integrating data processing, feature engineering, and model training into a single automated system.
 
-* End-to-end workflow execution
-* Reproducibility of results
-* Clear monitoring and logging
-* Modular and scalable design
+Key highlights:
 
-This implementation demonstrates a production-style data pipeline suitable for real-world machine learning workflows.
+* End-to-end automation using Prefect
+* Integration of both Python scripts and Jupyter notebooks
+* Modular and scalable architecture
+* Reproducible pipeline execution
 
----
+The solution reflects real-world MLOps practices and provides a strong foundation for scalable machine learning systems.

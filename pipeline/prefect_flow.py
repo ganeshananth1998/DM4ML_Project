@@ -1,14 +1,17 @@
 from prefect import flow, task
 import subprocess
-
+import sys
+import os
 
 # ------------------------
-# Helper paths (VERY IMPORTANT)
+# Safe paths (cross-platform)
 # ------------------------
 
-PYTHON_PATH = "./venv/bin/python"
-PAPERMILL_PATH = "./venv/bin/papermill"
+PYTHON_PATH = sys.executable
+PAPERMILL_PATH = "papermill"
 
+# Ensure logs folder exists
+os.makedirs("logs", exist_ok=True)
 
 # ------------------------
 # Python script tasks
@@ -26,7 +29,7 @@ def transform_data():
 
 @task
 def check_duplicates():
-    subprocess.run([PYTHON_PATH, "check_duplicates.py"], check=True)
+    subprocess.run([PYTHON_PATH, "processing/check_duplicates.py"], check=True)
 
 
 # ------------------------
