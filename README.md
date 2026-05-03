@@ -177,6 +177,19 @@ Example:
 ```
 models/model_<timestamp>.pkl
 ```
+Final dataset will be generated at:
+
+```text
+data/processed/final_dataset.csv
+```
+
+ Notes:
+
+* File is **not included in Git**
+* It is generated dynamically
+* Each run **appends new data**
+
+---
 
 ---
 
@@ -255,21 +268,6 @@ Follow this step-by-step flow to run the complete data pipeline:
 
 ---
 
-##  Output
-
-Final dataset will be generated at:
-
-```text
-data/processed/final_dataset.csv
-```
-
- Notes:
-
-* File is **not included in Git**
-* It is generated dynamically
-* Each run **appends new data**
-
----
 
 ## Deliverables
 
