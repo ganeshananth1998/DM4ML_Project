@@ -102,6 +102,25 @@ python processing/transform_data.py
 
 ---
 
+##  Feature Store Integration
+
+This repository now includes a Feast-based feature store implementation under `feature_store/`.
+
+To initialize and materialize the feature catalog:
+
+```bash
+pip install -r requirements.txt
+python feature_store/setup_feature_store.py
+```
+
+To run a sample training and inference feature retrieval demo:
+
+```bash
+python feature_store/feature_store_demo.py
+```
+
+---
+
 ##  Output
 
 Final dataset will be generated at:

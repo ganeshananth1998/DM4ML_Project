@@ -2,8 +2,13 @@ import subprocess
 import sys
 import os
 
+<<<<<<< Updated upstream
 PROJECT_DIR = os.getcwd()
 num_iterations = 5
+=======
+# Run the pipeline sequence 33 times
+num_iterations = 10
+>>>>>>> Stashed changes
 
 for i in range(1, num_iterations + 1):
     print(f"\n{'='*60}")
