@@ -122,7 +122,7 @@ Model Training & Evaluation
 
 ---
 
-## 🚀 Setup & Execution
+##  Setup & Execution
 
 ### 1️⃣ Clone the repository
 
