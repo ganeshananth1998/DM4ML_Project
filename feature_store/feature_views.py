@@ -1,6 +1,8 @@
 from pathlib import Path
-from feast import Entity, FeatureView, Field, FileSource
-from feast.types import Float32, Float64, Int32, Int64, String
+from feast import Entity, FeatureView, Field
+from feast.infra.offline_stores.file_source import FileSource
+from feast.types import Int64, Float32, Float64, String
+from feast.value_type import ValueType
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FEATURE_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "final_dataset_eda.csv"
@@ -8,26 +10,27 @@ FEATURE_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "final_dataset_eda.csv
 interaction_source = FileSource(
     path=str(FEATURE_DATA_PATH),
     event_timestamp_column="timestamp",
-    created_timestamp_column="timestamp",
 )
 
 # Define entities with join keys
 user_entity = Entity(
-    name="user_id", 
+    name="user_id",
     join_keys=["user_id"],
+    value_type=ValueType.INT64,
     description="User identifier"
 )
 
 product_entity = Entity(
     name="product_id",
     join_keys=["product_id"],
+    value_type=ValueType.INT64,
     description="Product identifier"
 )
 
 # User profile features
 user_profile_v1 = FeatureView(
     name="user_profile_v1",
-    entities=["user_id"],
+    entities=[user_entity],
     ttl=None,
     source=interaction_source,
     online=True,
@@ -48,7 +51,7 @@ user_profile_v1 = FeatureView(
 # Product profile features
 product_profile_v1 = FeatureView(
     name="product_profile_v1",
-    entities=["product_id"],
+    entities=[product_entity],
     ttl=None,
     source=interaction_source,
     online=True,
@@ -73,7 +76,7 @@ product_profile_v1 = FeatureView(
 # Interaction features (multi-entity feature view)
 interaction_features_v1 = FeatureView(
     name="interaction_features_v1",
-    entities=["user_id", "product_id"],
+    entities=[user_entity, product_entity],
     ttl=None,
     source=interaction_source,
     online=True,
@@ -99,4 +102,3 @@ interaction_features_v1 = FeatureView(
 # Export for use in setup
 ALL_ENTITIES = [user_entity, product_entity]
 ALL_FEATURE_VIEWS = [user_profile_v1, product_profile_v1, interaction_features_v1]
-
