@@ -2,40 +2,132 @@ from prefect import flow, task
 import subprocess
 
 
+# ------------------------
+# Helper paths (VERY IMPORTANT)
+# ------------------------
+
+PYTHON_PATH = "./venv/bin/python"
+PAPERMILL_PATH = "./venv/bin/papermill"
+
+
+# ------------------------
+# Python script tasks
+# ------------------------
+
 @task
 def generate_data():
-    subprocess.run(["python", "processing/generate_interactions.py"], check=True)
+    subprocess.run([PYTHON_PATH, "processing/generate_interactions.py"], check=True)
 
 
 @task
 def transform_data():
-    subprocess.run(["python", "processing/transform_data.py"], check=True)
+    subprocess.run([PYTHON_PATH, "processing/transform_data.py"], check=True)
 
 
 @task
 def check_duplicates():
-    subprocess.run(["python", "check_duplicates.py"], check=True)
+    subprocess.run([PYTHON_PATH, "check_duplicates.py"], check=True)
+
+
+# ------------------------
+# Notebook tasks (Papermill)
+# ------------------------
+
+@task
+def data_profiling():
+    subprocess.run([
+        PAPERMILL_PATH,
+        "analysis_dev/Data Quality & Profiling.ipynb",
+        "logs/profiling_output.ipynb"
+    ], check=True)
 
 
 @task
-def feature_engineering():
-    subprocess.run(["python", "processing/feature_engineering.py"], check=True)
+def data_preparation():
+    subprocess.run([
+        PAPERMILL_PATH,
+        "analysis_dev/Data-Preparation.ipynb",
+        "logs/preparation_output.ipynb"
+    ], check=True)
 
 
 @task
-def train_model():
-    subprocess.run(["python", "processing/train_model.py"], check=True)
+def eda():
+    subprocess.run([
+        PAPERMILL_PATH,
+        "analysis_dev/EDA And Visualization.ipynb",
+        "logs/eda_output.ipynb"
+    ], check=True)
 
+
+@task
+def feature_engineering_nb():
+    subprocess.run([
+        PAPERMILL_PATH,
+        "analysis_dev/Feature-Engineering And Transformation.ipynb",
+        "logs/feature_engineering_output.ipynb"
+    ], check=True)
+
+
+# ------------------------
+# Feature Store tasks
+# ------------------------
+
+@task
+def setup_feature_store():
+    subprocess.run([
+        PYTHON_PATH,
+        "feature_store/setup_feature_store.py"
+    ], check=True)
+
+
+@task
+def run_feature_store_demo():
+    subprocess.run([
+        PYTHON_PATH,
+        "feature_store/feature_store_demo.py"
+    ], check=True)
+
+
+# ------------------------
+# Model training notebook
+# ------------------------
+
+@task
+def model_training():
+    subprocess.run([
+        PAPERMILL_PATH,
+        "analysis_dev/Model Building & Evaluation.ipynb",
+        "logs/model_output.ipynb"
+    ], check=True)
+
+
+# ------------------------
+# Flow
+# ------------------------
 
 @flow
 def pipeline_flow():
     print("🚀 Prefect Pipeline Started")
 
-    generate_data()
-    transform_data()
-    check_duplicates()
-    feature_engineering()
-    train_model()
+    generate = generate_data()
+    transform = transform_data()
+    validate = check_duplicates()
+
+    profiling = data_profiling()
+    preparation = data_preparation()
+    eda_task = eda()
+    feature_nb = feature_engineering_nb()
+
+    store_setup = setup_feature_store()
+    store_demo = run_feature_store_demo()
+
+    model = model_training()
+
+    # DAG Order
+    generate >> transform >> validate \
+        >> profiling >> preparation >> eda_task \
+        >> feature_nb >> store_setup >> store_demo >> model
 
     print("🎉 Prefect Pipeline Completed")
 

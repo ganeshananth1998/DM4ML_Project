@@ -1,19 +1,44 @@
+# ------------------------
 # Data (generated)
+# ------------------------
 data/raw/
 data/processed/*.csv
+data/metadata/
 
+# ------------------------
 # Model files
+# ------------------------
 models/
 
+# ------------------------
+# Feature store / MLflow
+# ------------------------
+analysis_dev/mlruns/
+*.db
+
+# ------------------------
+# Notebook outputs
+# ------------------------
+logs/
+*.ipynb_checkpoints
+
+# ------------------------
 # Virtual environment
+# ------------------------
 venv/
 
+# ------------------------
 # Python cache
+# ------------------------
 __pycache__/
 *.pyc
 
+# ------------------------
 # Logs
+# ------------------------
 *.log
 
+# ------------------------
 # Mac system files
+# ------------------------
 .DS_Store
