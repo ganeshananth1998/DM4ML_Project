@@ -1,194 +1,242 @@
-# DM4ML Project – Data Pipeline
+# 🛍️ Recommendation System Pipeline (DM4ML Project)
 
-##  Overview
+## 👥 Team Information
 
-This project implements an end-to-end data pipeline for a product recommendation system.
+* **Project Repository:** https://github.com/ganeshananth1998/DM4ML_Project/tree/main
+* **Team Members:**
 
-It includes:
+## 👥 Team Members
 
-* Data ingestion (API + CSV)
-* Raw data storage (structured data lake)
-* Data transformation and merging
-* Incremental pipeline with append support
-* Synthetic data generation for scalability
-
----
-
-## Setup Instructions
-
-### 1. Clone repository
-
-```bash
-git clone <repo_url>
-cd DM4ML_PROJECT
-```
+| Student ID  | Name               |
+| ----------- | ------------------ |
+| 2025AE05551 | Ashish Raj         |
+| 2025AE05455 | Ganesh A           |
+| 2025AF05149 | P. Hemanth Bhargav |
+| 2025AF05127 | Praveen            |
 
 ---
 
-### 2. Create virtual environment (Python 3.9+ recommended)
+## 📌 Overview
 
-```bash
-python -m venv venv
-```
+This project implements an **end-to-end machine learning pipeline** for a recommendation system using modern MLOps practices.
 
-Activate:
+The pipeline is fully orchestrated using **Prefect** and integrates:
 
-* Mac/Linux:
+* Data generation & ingestion
+* Data transformation & validation
+* Data profiling & exploratory data analysis (EDA)
+* Feature engineering (via notebooks)
+* Feature store integration
+* Model training & evaluation
 
-```bash
-source venv/bin/activate
-```
+---
 
-* Windows:
+## 🎯 Objectives
 
-```bash
-venv\Scripts\activate
+* Build an **automated ML pipeline**
+* Ensure **reproducibility across environments**
+* Maintain a **modular and scalable architecture**
+* Integrate **data processing, feature engineering, and model training**
+
+---
+
+## 🏗️ Project Structure
+
+```text id="2dj3hp"
+DM4ML_Project/
+│
+├── pipeline/
+│   └── prefect_flow.py          # Main orchestration pipeline
+│
+├── processing/
+│   ├── generate_interactions.py
+│   ├── transform_data.py
+│   └── check_duplicates.py
+│
+├── analysis_dev/                # Jupyter notebooks
+│   ├── Data Quality & Profiling.ipynb
+│   ├── Data-Preparation.ipynb
+│   ├── EDA And Visualization.ipynb
+│   ├── Feature-Engineering And Transformation.ipynb
+│   └── Model Building & Evaluation.ipynb
+│
+├── feature_store/
+│   ├── setup_feature_store.py
+│   └── feature_store_demo.py
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── metadata/
+│
+├── models/                     # Trained model outputs
+├── logs/                       # Notebook outputs (ignored in Git)
+├── docs/                       # Task documentation
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-### 3. Install dependencies
+## 🔄 Pipeline Workflow
 
-```bash
+```text id="rfz8i7"
+Data Generation
+   ↓
+Data Transformation
+   ↓
+Data Validation
+   ↓
+Data Profiling (Notebook)
+   ↓
+Data Preparation (Notebook)
+   ↓
+EDA & Visualization
+   ↓
+Feature Engineering (Notebook)
+   ↓
+Feature Store
+   ↓
+Model Training & Evaluation (Notebook)
+```
+
+---
+
+## ⚙️ Technologies Used
+
+* Python
+* Prefect (pipeline orchestration)
+* Pandas (data processing)
+* Scikit-learn (model training)
+* Papermill (notebook execution)
+* Joblib (model serialization)
+
+---
+
+## 📊 Key Data Sources
+
+* **User Interaction Data**
+
+  * user_id, product_id, interaction_type, rating, timestamp
+
+* **Product Metadata**
+
+  * product_id, category, price, brand, description
+
+* **Processed Dataset**
+
+  * cleaned and transformed dataset used for modeling
+
+---
+
+## 🚀 Setup & Execution
+
+### 1️⃣ Clone the repository
+
+```bash id="o1h7al"
+git clone https://github.com/<your-username>/<repo-name>
+cd DM4ML_Project
+```
+
+---
+
+### 2️⃣ Create virtual environment
+
+```bash id="1a0ecp"
+python3 -m venv venv
+source venv/bin/activate     # Mac/Linux
+```
+
+---
+
+### 3️⃣ Install dependencies
+
+```bash id="2q79h2"
 pip install -r requirements.txt
 ```
 
 ---
 
-##  Input Data
+### 4️⃣ Run the pipeline
 
-Ensure the following file exists:
-
-```text
-data/source/user_interactions.csv
-```
- This file is used for ingestion (Task 2)
-
-python processing/generate_interactions.py
-
----
-
-##  How to Run the Pipeline
-
-### Step 1: Run ingestion
-
-```bash
-python run_pipeline.py
-```
-
- This will:
-
-* Fetch product data from API
-* Load user interactions CSV
-* Store raw data in:
-
-  ```
-  data/raw/
-  ```
-
----
-
-### Step 2: Run transformation
-
-```bash
-python processing/transform_data.py
-```
-
- This will:
-
-* Convert JSON → DataFrame
-* Merge with user interaction data
-* Save final dataset
-
----
-
-##  Feature Store Integration
-
-This repository now includes a Feast-based feature store implementation under `feature_store/`.
-
-To initialize and materialize the feature catalog:
-
-```bash
-pip install -r requirements.txt
-python feature_store/setup_feature_store.py
-```
-
-To run a sample training and inference feature retrieval demo:
-
-```bash
-python feature_store/feature_store_demo.py
+```bash id="e8t2lb"
+python pipeline/prefect_flow.py
 ```
 
 ---
 
-##  Output
+## 📈 Outputs
 
-Final dataset will be generated at:
+The pipeline generates:
 
-```text
-data/processed/final_dataset.csv
-```
+* Processed dataset
+* Feature dataset
+* Executed notebooks (stored in `logs/`)
+* Feature store artifacts
+* Trained model
 
- Notes:
+Example:
 
-* File is **not included in Git**
-* It is generated dynamically
-* Each run **appends new data**
-
----
-
-##  Project Structure
-
-```text
-data/
- ├── raw/        # ingested data (timestamp-based)
- ├── processed/  # final dataset
- ├── source/     # input CSV
-
-ingestion/       # API & CSV ingestion
-processing/      # transformation logic
-logs/            # execution logs
-pipeline/        # orchestration (future use)
+```text id="k5bd8c"
+models/model_<timestamp>.pkl
 ```
 
 ---
 
-## Pipeline Behavior
+## 📊 Results
 
-* Raw data is stored with timestamps (no overwrite)
-* Final dataset uses **append mode**
-* Supports large-scale data generation (15K+ per run)
+* Dataset processed: ~600,000 records
+* Duplicate records removed
+* Features successfully generated
+* Model trained and evaluated with high accuracy
 
 ---
 
-##  Notes
+## 🧠 Key Features
 
-* Large datasets are excluded via `.gitignore`
-* Use pipeline to regenerate data locally
-* VS Code may disable formatting for very large files (expected behavior)
+* Fully automated pipeline using Prefect
+* Integration of Python scripts and Jupyter notebooks
+* Feature store implementation
+* Cross-platform compatibility
+* Modular and scalable design
 
+---
 
-## Note for General:
-Clone the project, set up the virtual environment, and run the following commands:
-python processing/generate_interactions.py
-python run_pipeline.py
-python processing/transform_data.py
+## 🛠️ Monitoring & Logging
 
+Prefect provides:
 
-How to Run the Project
-1. Setup environment
-python -m venv venv
-source venv/bin/activate   # Mac/Linux
-pip install -r requirements.txt
-2. Run full pipeline
-python run_sequence.py
-Notes
-Data is generated dynamically (not stored in Git)
-Final dataset will be created at:
-data/processed/final_dataset.csv
-Duplicate handling is implemented
+* Task-level execution logs
+* Runtime monitoring
+* Failure tracking
 
-Do one clean run:
-rm -rf data/processed/*
-python run_sequence.py
-python check_duplicates.py
+Example:
+
+```text id="c2d74n"
+Task run 'model_training' - Finished in state Completed()
+Flow run - Finished in state Completed()
+```
+
+---
+
+## 📂 Deliverables
+
+* Prefect orchestration pipeline
+* Jupyter notebooks
+* Feature store implementation
+* Trained model artifact
+* Documentation (docs/)
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates a **production-style ML pipeline** that integrates all stages of the machine learning lifecycle.
+
+It ensures:
+
+* Automation
+* Reproducibility
+* Scalability
+
+and reflects real-world **MLOps practices**.
