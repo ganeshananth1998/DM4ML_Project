@@ -119,6 +119,55 @@ To run a sample training and inference feature retrieval demo:
 python feature_store/feature_store_demo.py
 ```
 
+### How to Check and Inspect the Feature Store
+
+To explicitly check the feature store status and view registered features:
+
+```bash
+# Check feature store status
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print('Feature store initialized successfully')"
+
+# List all feature views
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); print(fs.list_feature_views())"
+
+# Get feature view details
+python -c "from feature_store.feature_store import setup_feature_store; fs = setup_feature_store(); fv = fs.get_feature_view('user_profile_v1'); print(fv)"
+```
+
+---
+
+##  Execution Workflow
+
+Follow this step-by-step flow to run the complete data pipeline:
+
+1. **Data Quality Notebook** (`analysis dev/Data-Quality.ipynb`)
+   - Run data quality checks and validation
+   - Identify and handle missing values, outliers, and data inconsistencies
+
+2. **Data Preparation** (`analysis dev/Data-Preperation.ipynb`)
+   - Clean and preprocess raw data
+   - Handle data transformations and normalization
+
+3. **EDA and Visualization** (`analysis dev/EDA And Visualization.ipynb`)
+   - Perform exploratory data analysis
+   - Generate visualizations and insights
+   - Understand data distributions and relationships
+
+4. **Feature Engineering and Transformation**
+   - Create new features from existing data
+   - Apply transformations and scaling
+   - Prepare features for modeling
+
+5. **Feature Store** (`feature_store/`)
+   - Initialize and populate the feature store
+   - Register feature views and entities
+   - Enable feature serving for training and inference
+
+6. **Model Building and Evaluations**
+   - Train machine learning models
+   - Evaluate model performance
+   - Compare different algorithms and configurations
+
 ---
 
 ##  Output
@@ -145,6 +194,8 @@ data/
  ├── processed/  # final dataset
  ├── source/     # input CSV
 
+analysis dev/    # notebooks for data quality, preparation, EDA, feature engineering, and model evaluation
+feature_store/   # Feast feature store definitions and demo
 ingestion/       # API & CSV ingestion
 processing/      # transformation logic
 logs/            # execution logs
